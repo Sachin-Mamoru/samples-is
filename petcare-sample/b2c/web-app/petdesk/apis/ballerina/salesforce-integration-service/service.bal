@@ -113,7 +113,7 @@ function getOwner(http:Headers headers) returns string|error {
 
     var jwtHeader = headers.getHeader("x-jwt-assertion");
     if jwtHeader is http:HeaderNotFoundError {
-        var authHeader = headers.getHeader("Authorizationss");
+        var authHeader = headers.getHeader("Authorization");
         if authHeader is http:HeaderNotFoundError {
             return authHeader;
         } else {
@@ -144,15 +144,19 @@ function getOwnerFromPayload(jwt:Payload payload) returns string {
 function getOwnerWithEmail(http:Headers headers) returns [string, string]|error {
 
     io:println("Headers : ", headers);
-    var jwtHeader = "";
+    var jwtHeader = headers.getHeader("x-jwt-assertion");
     io:println("JWT Header : ", jwtHeader);
-    var authHeader = headers.getHeader("Authorizationss");
-    if authHeader is http:HeaderNotFoundError {
-        return authHeader;
-    } else {
-        if (authHeader.startsWith("Bearer ")) {
-            jwtHeader = authHeader.substring(7);
+    var authHeader = headers.getHeader("Authorization");
+        if authHeader is http:HeaderNotFoundError {
+            return authHeader;
+        } else {
+            if (authHeader.startsWith("Bearer ")) {
+                jwtHeader = authHeader.substring(7);
+            }
         }
+
+    if (jwtHeader is http:HeaderNotFoundError) {
+        return jwtHeader;
     }
 
     [jwt:Header, jwt:Payload] [_, payload] = check jwt:decode(jwtHeader);

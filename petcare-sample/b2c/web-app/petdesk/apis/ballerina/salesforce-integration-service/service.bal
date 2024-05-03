@@ -141,6 +141,7 @@ function getOwnerFromPayload(jwt:Payload payload) returns string {
 
 function getOwnerWithEmail(http:Headers headers) returns [string, string]|error {
 
+    io:println("Headers : ", headers);
     var jwtHeader = headers.getHeader("x-jwt-assertion");
     if jwtHeader is http:HeaderNotFoundError {
         var authHeader = headers.getHeader("Authorization");

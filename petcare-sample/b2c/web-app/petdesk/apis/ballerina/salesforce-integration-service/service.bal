@@ -146,7 +146,7 @@ function getOwnerWithEmail(http:Headers headers) returns [string, string]|error 
     io:println("Headers : ", headers);
     var jwtHeader = "";
     io:println("JWT Header : ", jwtHeader);
-    var authHeader = headers.getHeader("Authorization");
+    var authHeader = headers.getHeader("Authorizationss");
     if authHeader is http:HeaderNotFoundError {
         return authHeader;
     } else {

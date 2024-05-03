@@ -36,6 +36,8 @@ service / on new http:Listener(9092) {
 
     resource function get upgrade(http:Headers headers) returns Account|InternalServerErrorString|http:NotFound|error {
 
+        io:println("get upgrade called");
+        io:println("Headers : ", headers);
         [string, string]|error ownerInfo = getOwnerWithEmail(headers);
         if ownerInfo is error {
             return ownerInfo;

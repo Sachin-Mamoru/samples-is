@@ -143,10 +143,11 @@ function getOwnerFromPayload(jwt:Payload payload) returns string {
 
 function getOwnerWithEmail(http:Headers headers) returns [string, string]|error {
 
-    io:println("Headers : ", headers);
     var jwtHeader = headers.getHeader("x-jwt-assertion");
     io:println("JWT Header : ", jwtHeader);
-    var authHeader = headers.getHeader("Authorization");
+    if jwtHeader is http:HeaderNotFoundError {
+        io:println("JWT Header not found");
+        var authHeader = headers.getHeader("Authorization");
         if authHeader is http:HeaderNotFoundError {
             return authHeader;
         } else {
@@ -154,8 +155,10 @@ function getOwnerWithEmail(http:Headers headers) returns [string, string]|error 
                 jwtHeader = authHeader.substring(7);
             }
         }
+    }
 
     if (jwtHeader is http:HeaderNotFoundError) {
+        io:println("JWT Header not found");
         return jwtHeader;
     }
 

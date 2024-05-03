@@ -113,7 +113,7 @@ function getOwner(http:Headers headers) returns string|error {
 
     var jwtHeader = headers.getHeader("x-jwt-assertion");
     if jwtHeader is http:HeaderNotFoundError {
-        var authHeader = headers.getHeader("Authorization");
+        var authHeader = headers.getHeader("Authorizationss");
         if authHeader is http:HeaderNotFoundError {
             return authHeader;
         } else {

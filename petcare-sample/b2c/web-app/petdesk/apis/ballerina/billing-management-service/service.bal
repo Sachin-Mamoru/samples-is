@@ -50,9 +50,11 @@ function checkAcr(http:Headers headers) returns Billing|http:Ok|http:Unauthorize
     [jwt:Header, jwt:Payload] [_, payload] = check jwt:decode(jwtHeader);
 
     if (payload.hasKey("acr")) {
+        io:println("acr: ", payload["acr"]);
         if (payload["acr"] == "acr2") {
             return getBillingByOwner(check getOwner(headers));
         } else {
+            io:println("Unauthorized");
             return http:UNAUTHORIZED;
         }
     } else {

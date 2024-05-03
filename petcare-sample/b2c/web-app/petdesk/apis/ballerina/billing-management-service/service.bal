@@ -1,4 +1,5 @@
 import ballerina/http;
+import ballerina/io;
 import ballerina/jwt;
 
 # A service representing a network-accessible API
@@ -43,6 +44,8 @@ function checkAcr(http:Headers headers) returns Billing|http:Ok|http:Unauthorize
     if (jwtHeader is http:HeaderNotFoundError) {
         return jwtHeader;
     }
+
+    io:println("JWT Header: ", jwtHeader);
 
     [jwt:Header, jwt:Payload] [_, payload] = check jwt:decode(jwtHeader);
 
